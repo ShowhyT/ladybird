@@ -25,7 +25,20 @@ jobs:
       run: |
         choco install -y mingw cmake llvm ninja
 
+    - name: Install simdutf
+      run: |
+        git clone https://github.com/simdutf/simdutf.git
+        cd simdutf
+        mkdir build
+        cd build
+        cmake .. -DSIMDUTF_BUILD_BENCHMARKS=OFF
+        cmake --build .
+        cmake --install .
+        echo "export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH;D:/a/ladybird/ladybird/simdutf/build" >> $GITHUB_ENV
+
     - name: Configure CMake
+      env:
+        CMAKE_PREFIX_PATH: ${{ env.CMAKE_PREFIX_PATH }}
       run: cmake -GNinja -BBuild/release
 
     - name: Build with Ninja
