@@ -33,7 +33,7 @@ jobs:
         cd build
         cmake .. -DSIMDUTF_BUILD_BENCHMARKS=OFF
         cmake --build .
-        cmake --install .
+        if not exist D:\a\ladybird\ladybird\simdutf\build\tools\Release\sutf.exe cmake --install .
 
     - name: Configure CMake
       run: cmake -GNinja -BBuild/release
