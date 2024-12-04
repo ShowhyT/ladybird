@@ -24,29 +24,19 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y autoconf autoconf-archive automake build-essential ccache cmake curl fonts-liberation2 git libgl1-mesa-dev nasm ninja-build pkg-config qt6-base-dev qt6-tools-dev-tools qt6-wayland tar unzip zip libpulse-dev g++-13 libstdc++6-dev
-        sudo wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-        echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/kitware.list
-        sudo apt-get update -y
-        sudo apt-get install -y cmake
-        sudo wget -O /usr/share/keyrings/llvm-snapshot.gpg.key https://apt.llvm.org/llvm-snapshot.gpg.key
-        echo "deb [signed-by=/usr/share/keyrings/llvm-snapshot.gpg.key] https://apt.llvm.org/$(lsb_release -sc)/ llvm-toolchain-$(lsb_release -sc)-18 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
-        sudo apt-get update -y
-        sudo apt-get install -y clang-18 clangd-18 clang-format-18 clang-tidy-18 lld-18
+        sudo apt-get install -y autoconf autoconf-archive automake build-essential ccache cmake curl fonts-liberation2 git libgl1-mesa-dev nasm ninja-build pkg-config qt6-base-dev qt6-tools-dev-tools qt6-wayland tar unzip zip libpulse-dev g++-13
 
     - name: Install dependencies on macOS
       if: matrix.os == 'macos-latest'
       run: |
         brew install autoconf autoconf-archive automake ccache cmake nasm ninja pkg-config llvm@18 qt
 
-    - name: Install Chocolatey on Windows
-      if: matrix.os == 'windows-latest'
-      run: |
-        powershell -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-
     - name: Install dependencies on Windows
       if: matrix.os == 'windows-latest'
       run: |
+        Set-ExecutionPolicy Bypass -Scope Process -Force;
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
         choco install -y mingw cmake llvm ninja
 
     - name: Configure CMake
