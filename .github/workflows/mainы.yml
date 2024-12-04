@@ -25,16 +25,6 @@ jobs:
       run: |
         choco install -y mingw cmake llvm ninja
 
-    - name: Install simdutf
-      run: |
-        git clone https://github.com/simdutf/simdutf.git
-        cd simdutf
-        mkdir build
-        cd build
-        cmake .. -DSIMDUTF_BUILD_BENCHMARKS=OFF
-        cmake --build .
-        if (!(Test-Path "D:\a\ladybird\ladybird\simdutf\build\tools\Release\sutf.exe")) { cmake --install . }
-
     - name: Configure CMake
       run: cmake -GNinja -BBuild/release
 
