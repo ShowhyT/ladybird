@@ -31,12 +31,18 @@ jobs:
       run: |
         brew install autoconf autoconf-archive automake ccache cmake nasm ninja pkg-config llvm@18 qt
 
-    - name: Install dependencies on Windows
+    - name: Install Chocolatey on Windows
       if: matrix.os == 'windows-latest'
+      shell: pwsh
       run: |
         Set-ExecutionPolicy Bypass -Scope Process -Force;
         [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
-        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));
+        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+    - name: Install dependencies on Windows
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
         choco install -y mingw cmake llvm ninja
 
     - name: Configure CMake
