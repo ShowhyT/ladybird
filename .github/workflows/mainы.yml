@@ -32,20 +32,4 @@ jobs:
         sudo wget -O /usr/share/keyrings/llvm-snapshot.gpg.key https://apt.llvm.org/llvm-snapshot.gpg.key
         echo "deb [signed-by=/usr/share/keyrings/llvm-snapshot.gpg.key] https://apt.llvm.org/$(lsb_release -sc)/ llvm-toolchain-$(lsb_release -sc)-18 main" | sudo tee -a /etc/apt/sources.list.d/llvm.list
         sudo apt-get update -y
-        sudo apt-get install -y clang-18 clangd-18 clang-format-18 clang-tidy-18 lld-18
-
-    - name: Install dependencies on macOS
-      if: matrix.os == 'macos-latest'
-      run: |
-        brew install autoconf autoconf-archive automake ccache cmake nasm ninja pkg-config llvm@18 qt
-
-    - name: Install dependencies on Windows
-      if: matrix.os == 'windows-latest'
-      run: |
-        choco install -y mingw cmake llvm ninja
-
-    - name: Configure CMake
-      run: cmake -GNinja -BBuild/release
-
-    - name: Build with Ninja
-      run: ninja -CBuild/release
+        sudo apt-get install
