@@ -25,17 +25,26 @@ jobs:
       run: |
         choco install -y mingw cmake llvm ninja
 
-    - name: Check and install simdutf if not exists
+    - name: Reinstall simdutf
       shell: pwsh
       run: |
-        if (!(Test-Path -Path "D:/a/ladybird/ladybird/simdutf/build/install")) {
-            git clone https://github.com/simdutf/simdutf.git
-            cd simdutf
-            mkdir build
-            cd build
-            cmake .. -DSIMDUTF_BUILD_BENCHMARKS=OFF
-            cmake --build .
-            cmake --install . --prefix "D:/a/ladybird/ladybird/simdutf/build/install"
+        if (Test-Path -Path "simdutf") { Remove-Item -Recurse -Force -Path "simdutf" }
+        git clone https://github.com/simdutf/simdutf.git
+        cd simdutf
+        mkdir build
+        cd build
+        cmake .. -DSIMDUTF_BUILD_BENCHMARKS=OFF
+        cmake --build .
+        cmake --install . --prefix "D:/a/ladybird/ladybird/simdutf/build/install"
+
+    - name: Verify simdutf installation
+      shell: pwsh
+      run: |
+        if (Test-Path -Path "D:/a/ladybird/ladybird/simdutf/build/install/bin/sutf.exe") {
+            Write-Host "simdutf installed successfully"
+            & "D:/a/ladybird/ladybird/simdutf/build/install/bin/sutf.exe" --version
+        } else {
+            Write-Error "simdutf installation failed"
         }
 
     - name: Configure CMake
