@@ -26,14 +26,16 @@ jobs:
         choco install -y mingw cmake llvm ninja
 
     - name: Force reinstall simdutf
+      shell: pwsh
       run: |
-        if (Test-Path simdutf) { Remove-Item -Recurse -Force simdutf }
+        if (Test-Path -Path "simdutf") { Remove-Item -Recurse -Force -Path "simdutf" }
         git clone https://github.com/simdutf/simdutf.git
         cd simdutf
         mkdir build
         cd build
         cmake .. -DSIMDUTF_BUILD_BENCHMARKS=OFF
         cmake --build .
+        if (Test-Path -Path "tools/Release/sutf.exe") { Remove-Item -Force -Path "tools/Release/sutf.exe" }
         cmake --install . --prefix "D:/a/ladybird/ladybird/simdutf/build/install"
 
     - name: Configure CMake
