@@ -28,6 +28,13 @@ jobs:
           sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
           gcc --version
 
+      - name: Install simdutf
+        run: |
+          git clone https://github.com/simdutf/simdutf.git
+          cd simdutf
+          cmake -Bbuild -H.
+          sudo cmake --install build --prefix /usr/local
+
       - name: Build Ladybird
         run: |
           cmake -GNinja -B Build/release
