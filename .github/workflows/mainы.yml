@@ -25,20 +25,20 @@ jobs:
       run: |
         choco install -y mingw cmake llvm ninja
 
-    - name: Install simdutf
+    - name: Force reinstall simdutf
       run: |
+        if (Test-Path simdutf) { Remove-Item -Recurse -Force simdutf }
         git clone https://github.com/simdutf/simdutf.git
         cd simdutf
         mkdir build
         cd build
         cmake .. -DSIMDUTF_BUILD_BENCHMARKS=OFF
         cmake --build .
-        cmake --install .
-        echo "export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH;D:/a/ladybird/ladybird/simdutf/build" >> $GITHUB_ENV
+        cmake --install . --prefix "D:/a/ladybird/ladybird/simdutf/build/install"
 
     - name: Configure CMake
       env:
-        CMAKE_PREFIX_PATH: ${{ env.CMAKE_PREFIX_PATH }}
+        CMAKE_PREFIX_PATH: D:/a/ladybird/ladybird/simdutf/build/install
       run: cmake -GNinja -BBuild/release
 
     - name: Build with Ninja
